@@ -1,0 +1,18 @@
+DEBUG tests/libex29_tests.c:68: ----- RUNNING: ./tests/libex29_tests
+DEBUG tests/libex29_tests.c:60: 
+----$s
+DEBUG tests/libex29_tests.c:61: 
+----$s
+DEBUG tests/libex29_tests.c:62: 
+----$s
+DEBUG tests/libex29_tests.c:63: 
+----$s
+DEBUG tests/libex29_tests.c:68: ----- RUNNING: ./tests/libex29_tests
+DEBUG tests/libex29_tests.c:60: 
+----$s
+DEBUG tests/libex29_tests.c:61: 
+----$s
+DEBUG tests/libex29_tests.c:62: 
+----$s
+DEBUG tests/libex29_tests.c:63: 
+----$s
