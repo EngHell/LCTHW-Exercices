@@ -23,6 +23,7 @@ $(TARGET): build $(OBJECTS)
 
 build:
 	@mkdir -p build
+	@mkdir -p build/tests
 	@mkdir -p bin
 
 # The Unit Tests
@@ -30,6 +31,9 @@ build:
 tests: LDLIBS += $(TARGET)
 tests: $(TESTS)
 	sh ./tests/runtests.sh
+
+$(TESTS): %: %.c
+	$(CC) $(CFLAGS) $< $(TARGET) -o build/$@
 
 valgrind:
 	VALGRIND="valgrind --log-file=/tmp/valgrind-%p.log" $(MAKE)
@@ -50,5 +54,4 @@ install: all
 check:
 	@echo Files with potentially dangerous functions.
 	@egrep '[^_.>a-zA-Z0-9](str(n?cpy|n?cat|xfrm|n?dup|str|pbrk|tok|_)|stpn?cpy|a?sn?printf|byte_)' $(SOURCES) || true
-
 
