@@ -1,4 +1,4 @@
-.codelite
+.codelite/
 *.workspace
 src/*.o
-build
+build/

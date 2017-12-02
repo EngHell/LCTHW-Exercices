@@ -23,6 +23,7 @@ $(TARGET): build $(OBJECTS)
 
 build:
 	@mkdir -p build
+	@mkdir -p build/tests
 	@mkdir -p bin
 
 # The Unit Tests
@@ -30,6 +31,9 @@ build:
 tests: LDLIBS += $(TARGET)
 tests: $(TESTS)
 	sh ./tests/runtests.sh
+
+$(TESTS): %: %.c
+	$(CC) $(CFLAGS) $< $(TARGET) -o build/$@
 
 valgrind:
 	VALGRIND="valgrind --log-file=/tmp/valgrind-%p.log" $(MAKE)
