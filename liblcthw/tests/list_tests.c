@@ -1,11 +1,12 @@
 #include "minunit.h"
 #include <lcthw/list.h>
 #include <assert.h>
+#include <stdlib.h>
 
 static List *list = NULL;
-char *test1 = "test1 data";
-char *test2 = "test2 data";
-char *test3 = "test3 data";
+char *test1;
+char *test2;
+char *test3;
 
 char *test_create() {
 	list = List_create();
@@ -83,17 +84,59 @@ char *test_shift() {
 	return NULL;
 }
 
+char *test_copy() {
+	List *to = List_create();
+	List_copy(list, to);
+	
+	mu_assert(list->first->value == to->first->value, "First is not the same");
+	mu_assert(list->first->next->value == to->first->next->value, "Middle is not the same");
+	mu_assert(list->last->value == to->last->value, "First is not the same");
+	
+	List_destroy(to);
+	
+	return NULL;
+}
+
+char *test_operations_on_null() {
+	List_destroy(NULL);
+	List_clear(NULL);
+	List_clear_destroy(NULL);
+	List_push(NULL, NULL);
+	mu_assert(List_pop(NULL) == NULL, "pop over NULL list not returning NULL");
+	List_unshift(NULL, NULL);
+	mu_assert(List_shift(NULL) == NULL, "shift over NULL list not returning null");
+	mu_assert(List_remove(NULL,NULL) == NULL, "remove over NULL list not returning null");
+	
+	
+	return NULL;
+}
+
+void clean_on_fail(){
+	if(test1) free(test1);
+	if(test2) free(test2);
+	if(test3) free(test3);
+}
+
 char *all_tests() {
+	test1 = calloc(1,sizeof(char));
+	test2 = calloc(1,sizeof(char));
+	test3 = calloc(1,sizeof(char));
+	
+	
 	mu_suite_start();
 	
 	mu_run_test(test_create);
 	mu_run_test(test_push_pop);
 	mu_run_test(test_unshift);
 	mu_run_test(test_remove);
+	mu_run_test(test_copy);
 	mu_run_test(test_shift);
 	mu_run_test(test_destroy);
+	mu_run_test(test_operations_on_null);
+	
+	clean_on_fail();
 	
 	return NULL;
 }
 
-RUN_TESTS(all_tests);
+RUN_TESTS(all_tests, clean_on_fail);

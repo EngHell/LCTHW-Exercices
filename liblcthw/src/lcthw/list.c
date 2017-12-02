@@ -5,7 +5,10 @@ List *List_create() {
 	return calloc(1, sizeof(List));
 }
 
+// This clear all the nodes but not their values
 void List_destroy(List * list){
+	check(list, "List can't be null");
+	
 	LIST_FOREACH(list, first, next, cur){
 		if(cur->prev){
 			free(cur->prev);
@@ -14,15 +17,26 @@ void List_destroy(List * list){
 	
 	free(list->last);
 	free(list);
+	
+	error:
+	return;
 }
 
+// This clear all the values from the nodes but not the nodes
 void List_clear(List *list) {
+	check(list, "List can't be null");
+	
 	LIST_FOREACH(list, first, next, cur){
 		free(cur->value);
 	}
+	
+	error:
+	return;
 }
 
 void List_clear_destroy(List *list){
+	check(list, "List can't be null");
+	
 	LIST_FOREACH(list, first, next, cur){
 		free(cur->value);
 		
@@ -36,9 +50,14 @@ void List_clear_destroy(List *list){
 	
 	//List_clear(list);
 	//List_destroy(list);
+	
+	error:
+	return;
 }
 
 void List_push(List *list, void *value){
+	check(list, "List can't be null");
+	
 	ListNode *node = calloc(1, sizeof(ListNode));
 	check_mem(node);
 	
@@ -60,11 +79,18 @@ void List_push(List *list, void *value){
 }
 
 void *List_pop(List *list){
+	check(list, "List can't be null");
+	
 	ListNode *node = list->last;
 	return node != NULL ? List_remove(list, node) : NULL;
+	
+	error:
+	return NULL;
 }
 
 void List_unshift(List * list, void *value){
+	check(list, "List can't be null");
+	
 	ListNode *node = calloc(1, sizeof(ListNode));
 	check_mem(node);
 	
@@ -86,12 +112,18 @@ void List_unshift(List * list, void *value){
 }
 
 void *List_shift(List * list) {
+	check(list, "List can't be null");
+	
 	ListNode *node = list->first;
 	return node != NULL ? List_remove(list, node) : NULL;
+	
+	error:
+	return NULL;
 }
 
 void *List_remove(List *list, ListNode *node){
 	void *result = NULL;
+	check(list, "List can't be null");
 	
 	check(list->first && list->last, "List is empty.");
 	check(node, "node can't be NULL");
@@ -122,4 +154,12 @@ void *List_remove(List *list, ListNode *node){
 	
 	error:
 	return result;
+}
+
+
+// Extra credit operations
+void List_copy(List *from, List *to) {
+	LIST_FOREACH(from, first, next, cur){
+		List_push(to, cur->value);
+	}
 }

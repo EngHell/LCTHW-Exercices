@@ -1,3 +1,13 @@
+/*H**********************************************************************
+* FILENAME :        list.h             DESIGN REF: :v
+*
+* DESCRIPTION :
+*       Simple double linked structure
+*
+* NOTES :
+*       This file has part of the lcthw book original and improvements
+*
+*H*/
 #ifndef lcthw_List_h
 #define lcthw_List_h
 
@@ -18,6 +28,7 @@ typedef struct List {
 } List;
 
 List *List_create();
+// This clear all the nodes but not their values
 void List_destroy(List * list);
 void List_clear(List *list);
 void List_clear_destroy(List *lis);
@@ -33,6 +44,9 @@ void List_unshift(List *list, void *value);
 void *List_shift(List *list);
 
 void *List_remove(List *list, ListNode *node);
+
+// Extra credit operations
+void List_copy(List *from, List *to);
 
 #define LIST_FOREACH(L, S, M, V) ListNode *_node = NULL;\
 ListNode *V = NULL;\
