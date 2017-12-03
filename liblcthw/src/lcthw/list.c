@@ -159,7 +159,22 @@ void *List_remove(List *list, ListNode *node){
 
 // Extra credit operations
 void List_copy(List *from, List *to) {
+	check(from,"from can't be NULL");
+	check(to, "to can't be NULL");
+	
 	LIST_FOREACH(from, first, next, cur){
 		List_push(to, cur->value);
 	}
+	error: 
+	return;
+}
+
+List *List_join(List *first, List *second){
+	List *list = calloc(1,sizeof(List));
+	
+	list->first = first->first;
+	first->last->next = second->first;
+	list->last = second->last;
+	
+	return list;
 }

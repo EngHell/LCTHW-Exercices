@@ -47,6 +47,7 @@ void *List_remove(List *list, ListNode *node);
 
 // Extra credit operations
 void List_copy(List *from, List *to);
+List *List_join(List *first, List *second);
 
 #define LIST_FOREACH(L, S, M, V) ListNode *_node = NULL;\
 ListNode *V = NULL;\
