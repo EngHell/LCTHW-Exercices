@@ -1,0 +1,37 @@
+cmake_minimum_required(VERSION 3.9)
+project(lcthw)
+
+#set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_C_FLAGS "-g -std=c11 -Wall -Wextra")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
+
+include_directories(${CMAKE_SOURCE_DIR}/src)
+
+#lIBRARY BUILD
+file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/*.c")
+add_library(lcthw STATIC ${SOURCES} )
+
+# If necessary, use the RELATIVE flag, otherwise each source file may be listed
+# with full pathname. RELATIVE may makes it easier to extract an executable name
+# automatically.
+# file( GLOB APP_SOURCES RELATIVE app/*.cxx )
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/tests )
+file( GLOB_RECURSE TESTS RELATIVE ${CMAKE_SOURCE_DIR} "tests/*_tests.c")
+foreach( testsourcefile ${TESTS} )
+    # I used a simple string replace, to cut off .cpp.
+    string( REPLACE ".c" "" testname ${testsourcefile} )
+        string(REPLACE "tests/" "" testname ${testname})
+    add_executable( ${testname} ${testsourcefile} )
+    # Make sure YourLib is linked to each app
+    target_link_libraries( ${testname} lcthw )
+endforeach( testsourcefile ${APP_SOURCES} )
+
+add_custom_command ( OUTPUT tests.sh
+        COMMAND sh ${CMAKE_CURRENT_SOURCE_DIR}/tests/runtests.sh
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/)
+
+add_custom_target(
+        runtests ALL
+        DEPENDS tests.sh
+)
