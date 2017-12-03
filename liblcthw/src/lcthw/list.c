@@ -175,6 +175,45 @@ List *List_join(List *first, List *second){
 	list->first = first->first;
 	first->last->next = second->first;
 	list->last = second->last;
+	list->count = List_count(first) + List_count(second);
+
 	
 	return list;
+}
+
+void List_split(List *first, List *second, List *from, int index) {
+	check(from, "from can't be null on split")
+	check(first, "first can't be null on split")
+	check(second, "second can't be null on split")
+	check(index <= List_count(from), "index can't be higher than the count of elements on from");
+	
+	/* 
+	 * in there, is because for some reason the compiler thinks this var
+	 * is part of the for loop auxiliars and then destroy it after the for loop ends
+	 */
+	ListNode *first_last = from->first;
+	
+	// 1 because we already retrived the first one above
+	
+	for(int i = 1; i < index; ++i){
+		first_last = first_last->next;
+	}
+	
+	ListNode *second_first = first_last->next;
+	second_first->prev = NULL;
+	first_last->next =NULL;
+	
+	first->first = from->first;
+	first->last = first_last;
+	first->count = index;
+	
+	second->first = second_first;
+	second->last = from->last;
+	second->count = List_count(from) - index;
+	
+	return;
+	
+	
+	error:
+	return;
 }

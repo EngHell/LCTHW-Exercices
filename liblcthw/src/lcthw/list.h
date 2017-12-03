@@ -30,7 +30,9 @@ typedef struct List {
 List *List_create();
 // This clear all the nodes but not their values
 void List_destroy(List * list);
+// This clear all the values from the nodes but not the nodes
 void List_clear(List *list);
+// The result of both from above but in only one loop.
 void List_clear_destroy(List *lis);
 
 #define List_count(A) ((A)->count)
@@ -48,6 +50,7 @@ void *List_remove(List *list, ListNode *node);
 // Extra credit operations
 void List_copy(List *from, List *to);
 List *List_join(List *first, List *second);
+void List_split(List *first, List *second, List *from, int index);
 
 #define LIST_FOREACH(L, S, M, V) ListNode *_node = NULL;\
 ListNode *V = NULL;\

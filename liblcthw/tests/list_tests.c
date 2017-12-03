@@ -5,6 +5,7 @@
 
 static List *list = NULL;
 static List *list2 = NULL;
+static List *joint = NULL;
 char *test1;
 char *test2;
 char *test3;
@@ -37,6 +38,11 @@ char *test_push_pop() {
 	List_push(list, test3);
 	mu_assert(List_last(list) == test3, "Wrong last value");
 	mu_assert(List_count(list) == 3, "Wrong count on push.");
+	
+	List_push(list2, test4);
+	List_push(list2, test5);
+	mu_assert(List_last(list2) == test5, "Wrong last value");
+	mu_assert(List_count(list2) == 2, "Wrong count on push.");
 	
 	char *val = List_pop(list);
 	mu_assert(val == test3, "Wrong value on pop.");
@@ -104,12 +110,56 @@ char *test_copy() {
 }
 
 char *test_join() {
-	List *joint = List_join(list, list2);
+	list = List_create();
+	list2 = List_create();
+	
+	List_push(list, test1);
+	mu_assert(List_last(list) == test1, "Wrong last value.");
+	
+	List_push(list, test2);
+	mu_assert(List_last(list) == test2, "Wrong last value.");
+	
+	List_push(list, test3);
+	mu_assert(List_last(list) == test3, "Wrong last value");
+	mu_assert(List_count(list) == 3, "Wrong count on push.");
+	
+	List_push(list2, test4);
+	List_push(list2, test5);
+	mu_assert(List_last(list2) == test5, "Wrong last value");
+	mu_assert(List_count(list2) == 2, "Wrong count on push.");
+	
+	joint = List_join(list, list2);
 	mu_assert(joint != NULL, "Failed to allocate memory for join't");
 	
 	mu_assert(joint->first == list->first, "Joint first is not the expected first");
 	mu_assert(joint->last == list2->last, "Joint last is not the expected last");
+	mu_assert(List_count(joint) == List_count(list) + List_count(list2), "The count is not the expected count");
 	
+	static int count = 0;
+	ListNode *cur = joint->first;
+	while(cur){
+		cur = cur->next;
+		count++;
+	}
+	
+	mu_assert(count == List_count(list) + List_count(list2), "The looped count is not the expected count");
+	
+	return NULL;
+}
+
+char *test_split() {
+	List *split1 = List_create();
+	List *split2 = List_create();
+	
+	List_split(split1, split2, joint, 3);
+	
+	mu_assert(split1->first->value == test1, "Split first->first is not the expected first");
+	mu_assert(split1->last->value == test3, "Split first->last is not the expected last");
+	mu_assert(split2->first->value == test4, "Split second->first is not the expected first");
+	mu_assert(split2->last->value == test5, "Split second->last is not the expected last");
+	
+	List_clear_destroy(split1);
+	List_clear_destroy(split2);
 	free(joint);
 	
 	return NULL;
@@ -152,9 +202,11 @@ char *all_tests() {
 	mu_run_test(test_unshift);
 	mu_run_test(test_remove);
 	mu_run_test(test_copy);
-	mu_run_test(test_join);
 	mu_run_test(test_shift);
 	mu_run_test(test_destroy);
+	
+	mu_run_test(test_join);
+	mu_run_test(test_split);
 	mu_run_test(test_operations_on_null);
 	
 	clean_on_fail();
