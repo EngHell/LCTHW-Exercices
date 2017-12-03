@@ -1,8 +1,7 @@
 cmake_minimum_required(VERSION 3.9)
 project(lcthw)
-
-#set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_C_FLAGS "-g -std=c11 -Wall -Wextra")
+set(CMAKE_C_FLAGS_RELEASE "-O2")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
 
@@ -27,10 +26,14 @@ foreach( testsourcefile ${TESTS} )
     target_link_libraries( ${testname} lcthw )
 endforeach( testsourcefile ${APP_SOURCES} )
 
+#Those lines helps us to run the tests
 add_custom_command ( OUTPUT tests.sh
         COMMAND sh ${CMAKE_CURRENT_SOURCE_DIR}/tests/runtests.sh
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/)
 
+# sadly i couldn't get this to work in the first build, you have to run cmake all again but no worries as nothing
+# has changed it won't build the files again
+# but just exec our .sh file
 add_custom_target(
         runtests ALL
         DEPENDS tests.sh
