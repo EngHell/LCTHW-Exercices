@@ -39,10 +39,14 @@ void List_clear_destroy(List *lis);
 #define List_first(A) ((A)->first != NULL ? (A)->first->value : NULL)
 #define List_last(A) ((A)->last != NULL ? (A)->last->value : NULL)
 
+// Pushes to the tail
 void List_push(List *list, void *value);
+// removes from the tail
 void *List_pop(List *list);
 
+// Puts a new head while conserving the other as next
 void List_unshift(List *list, void *value);
+// Removes the head
 void *List_shift(List *list);
 
 void *List_remove(List *list, ListNode *node);
