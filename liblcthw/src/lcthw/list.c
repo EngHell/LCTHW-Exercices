@@ -161,7 +161,7 @@ void *List_remove(List *list, ListNode *node){
 void List_copy(List *from, List *to) {
 	check(from,"from can't be NULL");
 	check(to, "to can't be NULL");
-	
+
 	LIST_FOREACH(from, first, next, cur){
 		List_push(to, cur->value);
 	}
@@ -170,10 +170,11 @@ void List_copy(List *from, List *to) {
 }
 
 List *List_join(List *first, List *second){
-	List *list = calloc(1,sizeof(List));
+	List *list = List_create();
 	
 	list->first = first->first;
 	first->last->next = second->first;
+	second->first->prev = first->last;
 	list->last = second->last;
 	list->count = List_count(first) + List_count(second);
 
