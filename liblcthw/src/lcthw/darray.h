@@ -19,7 +19,7 @@ typedef struct DArray {
 
 DArray *DArray_create(size_t elemnt_size, size_t initial_max);
 
-void DArray_destroy(DArray * array);
+void DArray_destroy(DArray ** array);
 
 void DArray_clear(DArray * array);
 
@@ -31,7 +31,7 @@ int DArray_push(DArray * array, void * el);
 
 void *DArray_pop(DArray * array);
 
-void DArray_clear_destroy(DArray * array);
+void DArray_clear_destroy(DArray ** array);
 
 #define DArray_last(A) ((A)->contents[(A)->end - 1])
 #define DArray_first(A) ((A)->contents[0])
@@ -70,7 +70,8 @@ static inline void *DArray_remove(DArray * array, int i){
 }
 
 static inline void *DArray_new(DArray * array){
-	check(array->element_size > 0, "Can't use DArray_new on 0 size darrays.");
+	size_t array_size = array->element_size;
+	check(array_size > 0, "Can't use DArray_new on 0 size darrays.");
 
 	return calloc(1, array->element_size);
 

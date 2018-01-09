@@ -30,12 +30,14 @@ DArray *DArray_create(size_t element_size, size_t initial_max){
 void DArray_clear(DArray * array) {
 	int i = 0;
 	if(array->element_size > 0){
-		for(i = 0; i < array->max; i++){
+		for(i = 0; i < array->end; i++){
 			if(array->contents[i] != NULL){
 				free(array->contents[i]);
 			}
 		}
 	}
+
+	DArray_contract(array);
 }
 
 static inline int DArray_resize(DArray * array, size_t newsize){
@@ -79,15 +81,16 @@ int DArray_contract(DArray * array){
 	return DArray_resize(array, (size_t) (new_size + 1));
 }
 
-void DArray_destroy(DArray * array){
-	if(array) {
-		if(array->contents)
-			free(array->contents);
-		free(array);
+void DArray_destroy(DArray ** array){
+	if(*array) {
+		if((*array)->contents)
+			free((*array)->contents);
+		free(*array);
+		*array = NULL;
 	}
 }
 
-void DArray_clear_destroy(DArray * array){
+void DArray_clear_destroy(DArray ** array){
 	DArray_clear(array);
 	DArray_destroy(array);
 }
