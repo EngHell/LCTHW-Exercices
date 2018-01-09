@@ -68,6 +68,12 @@ List *Merge(List * left, List * right, List_compare cmp){
 	return result;
 }
 
+/**
+ * TODO: If i have more time later gotta change this to just use the nodes rather than creating new lists.
+ * @param list List that needs to be sorted
+ * @param cmp function to give the sorting order
+ * @return
+ */
 int List_merge_sort(List * list, List_compare cmp){
 	int count = List_count(list);
 
