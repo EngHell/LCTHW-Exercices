@@ -3,6 +3,7 @@
 //
 #include <lcthw/darray.h>
 #include "minunit.h"
+#include <stdio.h>
 
 static DArray * array = NULL;
 static int *val1 = NULL;
@@ -117,6 +118,57 @@ char *test_clear_and_destroy() {
 	return NULL;
 }
 
+static inline void swap(void * a, void * b, size_t size) {
+	char * temp = calloc(1, size);
+
+	memcpy(temp, a, size);
+	memcpy(a, b, size);
+	memcpy(b,temp, size);
+
+	free(temp);
+
+}
+
+void func(int ** i){
+	*i = malloc(sizeof(int));
+}
+
+char *some_test() {
+	array = DArray_create(sizeof(int *), 10);
+	int * val = DArray_new(array);
+	*val = 1;
+	DArray_set(array, 0, val);
+
+	printf("whatever is there: %d\n", *(int *)DArray_get(array, 0));
+
+	*val = 2;
+
+	printf("now it's: %d\n", *(int *)DArray_get(array, 0));
+
+	int *val2 = malloc( sizeof(int) );
+	*val2 = 5;
+
+	swap(val, val2, sizeof(int));
+
+	printf("after sawp val is: %d\n", *val);
+	printf("after sawp val2 is:%d\n", *val2);
+
+
+	DArray_clear_destroy(&array);
+
+	int * hi = NULL;
+	func(&hi);
+
+	printf("Pointer value: %p\n", hi);
+
+	if(hi)
+		free(hi);
+
+	return NULL;
+}
+
+
+
 char *all_tests() {
 	mu_suite_start();
 
@@ -127,6 +179,8 @@ char *all_tests() {
 	mu_run_test(test_expand_contract)
 	mu_run_test(test_push_pop);
 	mu_run_test(test_destroy);
+
+	mu_run_test(some_test);
 
 	mu_run_test(test_clear_and_destroy);
 
