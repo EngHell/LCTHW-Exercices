@@ -12,4 +12,7 @@ int DArray_qsort(DArray * array, DArray_compare cmp);
 int DArray_heapsort(DArray * array, DArray_compare cmp);
 int DArray_mergesort(DArray * array, DArray_compare cmp);
 
+// my own implementation :p
+int MDArray_qsort(DArray * array, DArray_compare cmp) ;
+
 #endif //LCTHW_DARRAY_ALGOS_H
