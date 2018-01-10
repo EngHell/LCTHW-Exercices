@@ -16,7 +16,7 @@ int DArray_mergesort(DArray * array, DArray_compare cmp) {
 
 }
 
-static inline void swap(void * a, void * b) {
+static inline void swap(void ** a, void ** b) {
 	/*char * temp = calloc(1, size);
 
 	memcpy(temp, a, size);
@@ -25,9 +25,10 @@ static inline void swap(void * a, void * b) {
 
 	free(temp);*/
 
-	void * temp =  a;
-	a = b;
-	b = temp;
+	void * temp = NULL;
+	temp = *a;
+	*a = *b;
+	*b = temp;
 
 
 }
@@ -49,24 +50,17 @@ int My_qsort(void * base, int count, size_t size, DArray_compare cmp) {
 	void *start = data[0];
 	void *pivot = data[pivot_index];
 
-//	swap(start, pivot);
-	void *temp = data[0];
-	data[0] = data[pivot_index];
-	data[pivot_index] = temp;
+	swap(&data[0], &data[pivot_index]);
 
 	for(int i = 1; i < count; i++){
-		if(cmp(&pivot, &data[i]) >= 0){
+		if(cmp(&pivot, &data[i]) > 0){
 			max_left++;
 
-			temp = data[i];
-			data[i] = data[max_left];
-			data[max_left] = temp;
+			swap(&data[i], &data[max_left]);
 		}
 	}
 
-	temp = data[0];
-	data[0] = data[max_left];
-	data[max_left] = temp;
+	swap(&data[0], &data[max_left]);
 
 	My_qsort(data, max_left, size, cmp);
 
