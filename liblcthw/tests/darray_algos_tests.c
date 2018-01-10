@@ -8,11 +8,25 @@ int testcmp(char **a, char **b) {
 DArray *create_words() {
 	DArray *result = DArray_create(0, 5);
 	char *words[] = {"asdfasfd",
-	                 "werwar", "13234", "asdfasfd", "oioj"};
+	                 "werwar", "13234", "howas", "oioj"};
 	int i = 0;
 
 	for (i = 0; i < 5; i++) {
 		DArray_push(result, words[i]);
+	}
+
+	return result;
+}
+
+DArray *create_numbers() {
+	DArray *result = DArray_create(sizeof(int *), 10);
+	int numbers[] = {3,1,4,1,5,9,2,6,5,3};
+	int i = 0;
+
+	for (i = 0; i < 10; i++) {
+		int *val =  DArray_new(result);
+		*val = numbers[i];
+		DArray_push(result, val);
 	}
 
 	return result;
@@ -32,7 +46,7 @@ int is_sorted(DArray *array) {
 
 char *run_sort_test(int (*func)(DArray *, DArray_compare),
                     const char *name) {
-	DArray *words = create_words();
+	DArray *words = create_numbers();
 	mu_assert(!is_sorted(words), "Words should start not sorted.");
 
 	debug("--- Testing %s sorting algorithm", name);
@@ -57,6 +71,10 @@ char *test_mergesort() {
 	return run_sort_test(DArray_mergesort, "mergesort");
 }
 
+char *test_my_qsort() {
+	return run_sort_test(MDArray_qsort, "my qsort");
+}
+
 char *all_tests() {
 	mu_suite_start();
 
@@ -64,6 +82,8 @@ char *all_tests() {
 
 	mu_run_test(test_heapsort);
 	mu_run_test(test_mergesort);
+
+	mu_run_test(test_my_qsort);
 
 	return NULL;
 }
