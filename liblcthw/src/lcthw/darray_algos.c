@@ -43,11 +43,9 @@ int My_qsort(void * base, int count, size_t size, DArray_compare cmp) {
 
 	void ** data= base;
 
-	int pivot_index = 0; //rand() % count;
+	int pivot_index = rand() % count;
 	int max_left = 0;
-	int right_index = 0;
 
-	void *start = data[0];
 	void *pivot = data[pivot_index];
 
 	swap(&data[0], &data[pivot_index]);
