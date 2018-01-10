@@ -19,13 +19,11 @@ DArray *create_words() {
 }
 
 DArray *create_numbers() {
-	DArray *result = DArray_create(sizeof(int *), 10);
-	int numbers[] = {3,1,4,1,5,9,2,6,5,3};
-	int i = 0;
+	DArray *result = DArray_create(sizeof(int *), 500);
 
-	for (i = 0; i < 10; i++) {
+	for (int i = 0; i < 500; i++) {
 		int *val =  DArray_new(result);
-		*val = numbers[i];
+		*val = rand();
 		DArray_push(result, val);
 	}
 
@@ -44,9 +42,8 @@ int is_sorted(DArray *array) {
 	return 1;
 }
 
-char *run_sort_test(int (*func)(DArray *, DArray_compare),
-                    const char *name) {
-	DArray *words = create_numbers();
+char *run_sort_test(int (*func)(DArray *, DArray_compare), const char *name) {
+	DArray *words = create_words();
 	mu_assert(!is_sorted(words), "Words should start not sorted.");
 
 	debug("--- Testing %s sorting algorithm", name);
@@ -54,7 +51,23 @@ char *run_sort_test(int (*func)(DArray *, DArray_compare),
 	mu_assert(rc == 0, "sort failed");
 	mu_assert(is_sorted(words), "didn't sort it");
 
-	DArray_destroy(&words);
+	DArray_clear_destroy(&words);
+
+	return NULL;
+}
+
+char *run_my_tests(int (*func)(DArray *, DArray_compare), const char *name){
+	printf("Personalized test\n");
+	DArray *words = create_numbers();
+	mu_assert(!is_sorted(words), "Words should start not sorted.");
+
+	debug("--- Testing %s sorting algorithm", name);
+	int rc = func(words, (DArray_compare) testcmp);
+	debug("--- Test finished elapsed time: ");
+	mu_assert(rc == 0, "sort failed");
+	mu_assert(is_sorted(words), "didn't sort it");
+
+	DArray_clear_destroy(&words);
 
 	return NULL;
 }
@@ -72,7 +85,7 @@ char *test_mergesort() {
 }
 
 char *test_my_qsort() {
-	return run_sort_test(MDArray_qsort, "my qsort");
+	return run_my_tests(MDArray_qsort, "my qsort");
 }
 
 char *all_tests() {
