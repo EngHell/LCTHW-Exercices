@@ -33,14 +33,14 @@ static inline void swap(void ** a, void ** b) {
 
 }
 
-int My_qsort(void * base, int count, size_t size, DArray_compare cmp) {
+int My_qsort(void * base, size_t count, size_t size, DArray_compare cmp) {
 	if(count <= 1)
 		return 0;
 
 	void ** data= base;
 
-	int pivot_index = rand() % count;
-	int max_left = 0;
+	size_t pivot_index = rand() % count;
+	size_t max_left = 0;
 
 	void *pivot = data[pivot_index];
 
