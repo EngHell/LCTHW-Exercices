@@ -91,7 +91,7 @@ void DArray_destroy(DArray ** array){
 }
 
 void DArray_clear_destroy(DArray ** array){
-	DArray_clear(array);
+	DArray_clear(*array);
 	DArray_destroy(array);
 }
 

@@ -97,7 +97,22 @@ char *test_push_pop() {
 }
 
 char *test_destroy(){
-	DArray_destroy(array);
+	DArray_destroy(&array);
+
+	return NULL;
+}
+
+char *test_clear_and_destroy() {
+	array = DArray_create(sizeof(int *), 100);
+	for(int i = 0; i < 500; i++){
+		int *val = DArray_new(array);
+		*val = i;
+		DArray_push(array, val);
+	}
+
+	DArray_clear_destroy(&array);
+
+	mu_assert(array == NULL, "Should be null");
 
 	return NULL;
 }
@@ -112,6 +127,8 @@ char *all_tests() {
 	mu_run_test(test_expand_contract)
 	mu_run_test(test_push_pop);
 	mu_run_test(test_destroy);
+
+	mu_run_test(test_clear_and_destroy);
 
 	return NULL;
 }

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.9)
 project(lcthw)
-set(CMAKE_C_FLAGS "-g -std=c11 -Wall -Wextra")
+set(CMAKE_C_FLAGS "-g -std=c11 -Wall -Wextra -Du_char='unsigned char'")
 set(CMAKE_C_FLAGS_RELEASE "-O2")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
@@ -9,8 +9,11 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
 #lIBRARY BUILD
+
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/*.c")
 add_library(lcthw STATIC ${SOURCES})
+target_link_libraries(lcthw bsd)
+#target_compile_definitions(lcthw PRIVATE u_char="unsigned char")
 
 # If necessary, use the RELATIVE flag, otherwise each source file may be listed
 # with full pathname. RELATIVE may makes it easier to extract an executable name
