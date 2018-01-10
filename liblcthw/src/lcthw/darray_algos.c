@@ -33,10 +33,6 @@ static inline void swap(void ** a, void ** b) {
 
 }
 
-static inline int index(int pos, int size) {
-	return pos * size;
-}
-
 int My_qsort(void * base, int count, size_t size, DArray_compare cmp) {
 	if(count <= 1)
 		return 0;
