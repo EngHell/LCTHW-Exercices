@@ -25,7 +25,7 @@ static int check_order(RadixMap * map) {
 		d2 = map->contents[i + 1];
 
 		if(d1.data.key > d2.data.key){
-			debug("FAIL: 1=%u, key: %u, equals max? %d\n",
+			debug("FAIL: 1=%u, key: %u, value: %u, equals max? %d\n",
 			      i,
 			      d1.data.key,
 			      d1.data.value,
@@ -48,13 +48,13 @@ static int test_search(RadixMap * map){
 		d = &map->contents[i];
 		found = RadixMap_find(map, d->data.key);
 
-		check(found != NULL, "Dind't find %u at %u.", d->data.key, i);
+		check(found != NULL, "Dind't find %u at %u.", (unsigned int)d->data.key, (unsigned int)i);
 		check(found->data.key == d->data.key,
 		      "Got the wrong result: %p:%u looking for %u at %u",
 		      found,
-		      found->data.key,
-		      d->data.key,
-		      i
+		      (unsigned int)found->data.key,
+		      (unsigned int)d->data.key,
+		      (unsigned int)i
 		);
 	}
 
