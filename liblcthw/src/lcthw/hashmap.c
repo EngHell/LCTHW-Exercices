@@ -150,7 +150,7 @@ void *Hashmap_get(Hashmap * map, void * key){
 	check_mem(bucket);
 
 	int i = Hashmap_get_node(map, hash, bucket, key);
-	check(i >= 0,"Ilegal node index from Hashmap_get_node");
+	if(i < 0) return NULL;
 
 	HashmapNode *node = DArray_get(bucket, i);
 	check(node!= NULL, "failed to get node from bucket when it should exist.");
