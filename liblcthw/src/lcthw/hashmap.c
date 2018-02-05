@@ -67,11 +67,11 @@ void Hashmap_destroy(Hashmap * map){
 					}
 					DArray_destroy(&bucket);
 				}
-				DArray_destroy(&map->buckets);
 			}
 
-			free(map);
+			DArray_destroy(&map->buckets);
 		}
+		free(map);
 	}
 }
 
